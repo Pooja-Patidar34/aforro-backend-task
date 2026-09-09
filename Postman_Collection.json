@@ -1,0 +1,212 @@
+{
+  "info": {
+    "_postman_id": "aforro-backend-api",
+    "name": "Aforro Backend API",
+    "description": "Complete API collection for Aforro order management and inventory system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "List All Stores",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/stores/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "stores", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"store_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity_requested\": 5\n    },\n    {\n      \"product_id\": 2,\n      \"quantity_requested\": 3\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/orders/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["orders", ""]
+            }
+          }
+        },
+        {
+          "name": "List Store Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/stores/1/orders/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["stores", "1", "orders", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Get Store Inventory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/stores/1/inventory/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["stores", "1", "inventory", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/search/products/?q=phone&store_id=1&sort=price",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "search", "products", ""],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "phone"
+                },
+                {
+                  "key": "store_id",
+                  "value": "1"
+                },
+                {
+                  "key": "sort",
+                  "value": "price"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Product Autocomplete",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/search/suggest/?q=pro",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "search", "suggest", ""],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "pro"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documentation",
+      "item": [
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8000/api/docs/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "docs", ""]
+            }
+          }
+        },
+        {
+          "name": "ReDoc",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8000/api/redoc/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "redoc", ""]
+            }
+          }
+        },
+        {
+          "name": "OpenAPI Schema",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8000/api/schema/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "schema", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

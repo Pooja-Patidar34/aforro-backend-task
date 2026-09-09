@@ -195,6 +195,23 @@ docker-compose logs -f web
 docker-compose down
 ```
 
+## API Documentation
+
+### Swagger UI (Interactive)
+Access the interactive API documentation:
+- **Swagger**: http://localhost:8000/api/docs/
+- **ReDoc**: http://localhost:8000/api/redoc/
+- **OpenAPI Schema**: http://localhost:8000/api/schema/
+
+All endpoints are testable directly from Swagger UI!
+
+### Postman Collection
+Import `Postman_Collection.json` into Postman:
+1. Download the file from the repository
+2. Open Postman
+3. Click "Import" → Select `Postman_Collection.json`
+4. All API endpoints ready to test!
+
 ## Quick API Test
 
 After setup, test the API immediately:
@@ -207,6 +224,9 @@ python test_api.py
 curl http://localhost:8000/api/stores/
 curl http://localhost:8000/api/search/products/?q=test
 curl http://localhost:8000/api/search/suggest/?q=pro
+
+# Option 3: View interactive docs
+# Open http://localhost:8000/api/docs/ in browser
 ```
 
 Expected results: All 6 endpoints return 200 OK ✅
