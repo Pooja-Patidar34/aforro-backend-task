@@ -51,6 +51,26 @@ A complete Django REST API backend demonstrating order management, inventory, pr
 - Prefetch/select_related for N+1 prevention
 - Transaction.atomic() for order creation consistency
 
+## 📚 API Documentation & Testing
+
+### Swagger UI (Interactive API Explorer)
+- **URL**: http://localhost:8000/api/docs/
+- **Features**: Test all endpoints directly from the browser
+- **Auto-generated**: From DRF serializers and viewsets
+
+### ReDoc (Alternative Documentation)
+- **URL**: http://localhost:8000/api/redoc/
+- **Features**: Clean, readable API documentation
+
+### OpenAPI Schema
+- **URL**: http://localhost:8000/api/schema/
+- **Format**: JSON OpenAPI 3.0 schema
+
+### Postman Collection
+- **File**: `Postman_Collection.json` (included in repo)
+- **Import**: Open Postman → Import → Select file
+- **Ready to Use**: All 6 endpoints with sample requests
+
 ## Project Structure
 
 ```
@@ -194,23 +214,6 @@ docker-compose logs -f web
 ```bash
 docker-compose down
 ```
-
-## API Documentation
-
-### Swagger UI (Interactive)
-Access the interactive API documentation:
-- **Swagger**: http://localhost:8000/api/docs/
-- **ReDoc**: http://localhost:8000/api/redoc/
-- **OpenAPI Schema**: http://localhost:8000/api/schema/
-
-All endpoints are testable directly from Swagger UI!
-
-### Postman Collection
-Import `Postman_Collection.json` into Postman:
-1. Download the file from the repository
-2. Open Postman
-3. Click "Import" → Select `Postman_Collection.json`
-4. All API endpoints ready to test!
 
 ## Quick API Test
 
