@@ -55,11 +55,11 @@ A complete Django REST API backend demonstrating order management, inventory, pr
 
 ```
 aforro_assignment/
-├── catalog/              # Product & Category models
+├── products/             # Product & Category models
 │   ├── models.py
 │   ├── serializers.py
 │   └── migrations/
-├── common/               # Store & Inventory models
+├── stores/               # Store & Inventory models
 │   ├── models.py
 │   ├── serializers.py
 │   ├── views.py
@@ -80,58 +80,136 @@ aforro_assignment/
 │   ├── settings.py
 │   ├── urls.py
 │   ├── celery.py
-│   └── wsgi.py
+│   ├── wsgi.py
+│   └── asgi.py
 ├── manage.py
 ├── requirements.txt
 ├── Dockerfile
-└── docker-compose.yml
+├── docker-compose.yml
+├── README.md
+└── API_EXAMPLES.md
 ```
 
 ## Setup & Installation
 
-### Local Development (SQLite)
+### Option 1: Local Development (SQLite) - Recommended for Quick Start
 
+#### Step 1: Clone Repository
 ```bash
-# Create and activate virtual environment
+git clone https://github.com/Pooja-Patidar34/aforro-backend-task.git
+cd aforro-backend-task
+```
+
+#### Step 2: Create & Activate Virtual Environment
+```powershell
+# Windows (PowerShell)
 python -m venv myenv
-myenv\Scripts\Activate.ps1
+.\myenv\Scripts\Activate.ps1
 
-# Install dependencies
+# Windows (Command Prompt)
+python -m venv myenv
+myenv\Scripts\activate.bat
+
+# Linux/Mac
+python -m venv myenv
+source myenv/bin/activate
+```
+
+#### Step 3: Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-# Run migrations
-python manage.py makemigrations
+#### Step 4: Run Database Migrations
+```bash
 python manage.py migrate
+```
 
-# Seed database with test data
+#### Step 5: Seed Database with Test Data
+```bash
 python manage.py seed_data
+```
+This creates:
+- 12+ categories
+- 1000+ products
+- 20+ stores
+- 6000+ inventory records
 
-# Start development server
+#### Step 6: Start Development Server
+```bash
 python manage.py runserver
 ```
 
-### Docker Setup (PostgreSQL + Redis)
+**Server running at**: http://localhost:8000
 
+#### Step 7: Test the API
 ```bash
-# Build and start all services
-docker-compose up -d
-
-# Run migrations inside container
-docker-compose exec web python manage.py migrate
-
-# Seed data
-docker-compose exec web python manage.py seed_data
-
-# View logs
-docker-compose logs -f web
+# In a new terminal (with venv activated)
+python test_api.py
 ```
 
-Services:
+You should see all 6 endpoints working! ✅
+
+### Option 2: Docker Setup (PostgreSQL + Redis) - Production-like
+
+#### Step 1: Clone Repository
+```bash
+git clone https://github.com/Pooja-Patidar34/aforro-backend-task.git
+cd aforro-backend-task
+```
+
+#### Step 2: Build and Start All Services
+```bash
+docker-compose up -d
+```
+
+This starts 5 services:
+- Django API (port 8000)
+- PostgreSQL (port 5432)
+- Redis (port 6379)
+- Celery Worker (background)
+- Celery Beat (scheduler)
+
+#### Step 3: Run Database Migrations
+```bash
+docker-compose exec web python manage.py migrate
+```
+
+#### Step 4: Seed Database
+```bash
+docker-compose exec web python manage.py seed_data
+```
+
+#### Step 5: Access Services
 - **Django API**: http://localhost:8000
 - **PostgreSQL**: localhost:5432
 - **Redis**: localhost:6379
-- **Celery Worker**: Background tasks
-- **Celery Beat**: Scheduled tasks
+
+#### Step 6: View Logs
+```bash
+docker-compose logs -f web
+```
+
+#### Step 7: Stop Services
+```bash
+docker-compose down
+```
+
+## Quick API Test
+
+After setup, test the API immediately:
+
+```bash
+# Option 1: Run automated test
+python test_api.py
+
+# Option 2: Test individual endpoints
+curl http://localhost:8000/api/stores/
+curl http://localhost:8000/api/search/products/?q=test
+curl http://localhost:8000/api/search/suggest/?q=pro
+```
+
+Expected results: All 6 endpoints return 200 OK ✅
 
 ## API Examples
 
@@ -218,8 +296,25 @@ Response:
 
 ## Testing
 
+### Automated API Tests
 ```bash
-# Run tests (add test files to each app)
+# Test all 6 API endpoints
+python test_api.py
+```
+
+Expected output:
+```
+✅ GET /api/stores/              → 200 OK (20 stores)
+✅ GET /stores/{id}/inventory/   → 200 OK (20 items)
+✅ POST /orders/                 → 201 CREATED
+✅ GET /stores/{id}/orders/      → 200 OK
+✅ GET /api/search/products/     → 200 OK
+✅ GET /api/search/suggest/      → 200 OK
+```
+
+### Django Test Suite
+```bash
+# Run all tests
 python manage.py test
 
 # Run with coverage
@@ -236,6 +331,61 @@ coverage report
 5. Run Celery workers
 6. Set up Celery Beat for scheduled tasks
 7. Use gunicorn + nginx for WSGI serving
+
+## Troubleshooting
+
+### Port 8000 Already in Use
+```bash
+# Find and kill the process
+# Windows: Use Task Manager or
+netstat -ano | findstr :8000
+
+# Linux/Mac:
+lsof -i :8000
+kill -9 <PID>
+
+# Or run on different port
+python manage.py runserver 8080
+```
+
+### Database Locked (SQLite)
+```bash
+# Delete database and restart
+del db.sqlite3
+python manage.py migrate
+python manage.py seed_data
+python manage.py runserver
+```
+
+### Virtual Environment Issues
+```bash
+# Deactivate and reactivate
+deactivate
+.\myenv\Scripts\Activate.ps1
+
+# Or reinstall packages
+pip install -r requirements.txt --force-reinstall
+```
+
+### Docker Issues
+```bash
+# Stop and remove containers
+docker-compose down
+
+# Rebuild images
+docker-compose up -d --build
+
+# View logs for errors
+docker-compose logs web
+```
+
+## Notes
+
+- **Caching**: Product search results cached for 5 minutes in Redis
+- **Async Tasks**: Order confirmations sent asynchronously via Celery
+- **Database**: Uses SQLite locally, PostgreSQL in Docker
+- **Performance**: Optimized queries with indexes and select_related/prefetch_related
+- **Scalability**: Ready for horizontal scaling with separate workers, caching, and async tasks
 
 ## Technologies Used
 
